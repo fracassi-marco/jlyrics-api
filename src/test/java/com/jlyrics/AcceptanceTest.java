@@ -35,6 +35,6 @@ public class AcceptanceTest {
             .get(base + "lyrics/search")
         .then()
             .statusCode(200)
-            .body("text", containsString("You can brush my hair"));
+            .body("text", containsString("can brush my hair"));
     }
 }
