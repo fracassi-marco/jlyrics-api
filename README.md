@@ -1,7 +1,7 @@
 # JLyrics Api
 
 JLyrics Api is a simple project based on Spring Boot and Java. 
-It's goal is to explore the testing strategies related to a Spring Boot web application written in Java.
+It's goal is to explore the testing strategies related to a Spring Boot rest application written in Java.
 It provide a set of examples for:
 * acceptance tests
 * external rest service integration tests
@@ -13,8 +13,8 @@ It provide a set of examples for:
 Clone the repository:
 
 ```
-git clone https://github.com/fracassi-marco/jlyrics-web.git
-cd lyrics-web
+git clone https://github.com/fracassi-marco/jlyrics-api.git
+cd jlyrics-api
 ```
 
 Run the application:
