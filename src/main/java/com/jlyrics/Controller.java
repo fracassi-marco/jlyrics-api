@@ -13,16 +13,19 @@ import java.util.HashMap;
 public class Controller {
 
     private SearchService searchService;
+    private RatingRepository ratingRepository;
 
     @Autowired
-    public Controller(SearchService searchService) {
+    public Controller(SearchService searchService, RatingRepository ratingRepository) {
         this.searchService = searchService;
+        this.ratingRepository = ratingRepository;
     }
 
     @GetMapping("/search")
-    public HashMap<String, String> search(@RequestParam String author, @RequestParam String title) {
-        HashMap<String, String> result = new HashMap<>();
+    public HashMap<String, Object> search(@RequestParam String author, @RequestParam String title) {
+        HashMap<String, Object> result = new HashMap<>();
         result.put("text", searchService.search(author, title));
+        result.put("rating", ratingRepository.load(author, title).getValue());
         return result;
     }
 }

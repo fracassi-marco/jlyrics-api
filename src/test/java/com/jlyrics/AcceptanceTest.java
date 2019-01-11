@@ -1,5 +1,6 @@
 package com.jlyrics;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -21,10 +25,20 @@ public class AcceptanceTest {
     private int port;
 
     private URL base;
+    private Connection connection;
+    private Ratings ratings;
 
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
+        connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
+        ratings = new Ratings(connection);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        ratings.clean();
+        connection.close();
     }
 
     @Test
@@ -40,7 +54,9 @@ public class AcceptanceTest {
     }
 
     @Test
-    public void shouldReturnRating() {
+    public void shouldReturnRating() throws SQLException {
+        ratings.add("Aqua", "Barbie Girl", 8);
+
         given()
             .queryParam("author", "Aqua")
             .queryParam("title", "Barbie Girl")
@@ -48,6 +64,6 @@ public class AcceptanceTest {
             .get(base + "lyrics/search")
         .then()
             .statusCode(200)
-            .body("rating", is("8"));
+            .body("rating", is(8));
     }
 }
