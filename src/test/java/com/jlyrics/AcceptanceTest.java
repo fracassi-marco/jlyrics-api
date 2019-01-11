@@ -11,6 +11,7 @@ import java.net.URL;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,5 +37,17 @@ public class AcceptanceTest {
         .then()
             .statusCode(200)
             .body("text", containsString("can brush my hair"));
+    }
+
+    @Test
+    public void shouldReturnRating() {
+        given()
+            .queryParam("author", "Aqua")
+            .queryParam("title", "Barbie Girl")
+        .when()
+            .get(base + "lyrics/search")
+        .then()
+            .statusCode(200)
+            .body("rating", is("8"));
     }
 }
